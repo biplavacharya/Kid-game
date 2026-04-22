@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DualLingo Kids</title>
+<style>
+/* ===== RESET & BASE ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --pink:#FF6B9D;--purple:#9B59B6;--blue:#3498DB;--green:#2ECC71;
+  --yellow:#F1C40F;--orange:#FF8C42;--red:#E74C3C;--teal:#1ABC9C;
+  --bg:#FFF9F0;--card:#fff;--shadow:0 8px 24px rgba(0,0,0,.12);
+  --radius:24px;--font:'Segoe UI',system-ui,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);min-height:100vh;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  touch-action:manipulation}
+#app{width:100%;max-width:480px;min-height:100vh;position:relative;
+  display:flex;flex-direction:column;background:var(--bg)}
+
+/* ===== SCREENS ===== */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:20px;
+  transition:opacity .4s,transform .4s;opacity:0;pointer-events:none;transform:scale(.95)}
+.screen.active{opacity:1;pointer-events:all;transform:scale(1)}
+
+/* ===== SPLASH ===== */
+#splash{background:linear-gradient(135deg,#667eea,#764ba2)}
+.splash-logo{font-size:3.2rem;font-weight:900;color:#fff;text-align:center;
+  animation:bounce 1s infinite alternate;text-shadow:0 4px 12px rgba(0,0,0,.3)}
+.splash-sub{color:rgba(255,255,255,.85);font-size:1.1rem;margin-top:8px;text-align:center}
+.splash-emoji{font-size:5rem;animation:spin 3s linear infinite;display:block;margin-bottom:16px}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* ===== HOME ===== */
+#home{background:linear-gradient(160deg,#ffecd2,#fcb69f)}
+.home-title{font-size:2rem;font-weight:900;color:#5a2d82;margin-bottom:6px;text-align:center}
+.home-sub{color:#7a4f6d;font-size:.95rem;margin-bottom:28px;text-align:center}
+.category-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:360px}
+.cat-btn{background:var(--card);border:none;border-radius:var(--radius);
+  padding:24px 16px;cursor:pointer;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
+.cat-btn:active{transform:scale(.93);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.cat-emoji{font-size:3.2rem;line-height:1}
+.cat-label{font-size:1rem;font-weight:700;color:#333}
+.cat-btn.animals{border-top:6px solid var(--green)}
+.cat-btn.alphabets{border-top:6px solid var(--blue)}
+.cat-btn.numbers{border-top:6px solid var(--orange)}
+
+/* ===== MODE SELECT ===== */
+#modeSelect{background:linear-gradient(135deg,#a8edea,#fed6e3)}
+.mode-title{font-size:1.6rem;font-weight:900;color:#333;margin-bottom:8px;text-align:center}
+.mode-sub{color:#666;font-size:.9rem;margin-bottom:32px;text-align:center}
+.mode-cards{display:flex;flex-direction:column;gap:20px;width:100%;max-width:340px}
+.mode-card{border:none;border-radius:var(--radius);padding:28px 20px;cursor:pointer;
+  display:flex;align-items:center;gap:18px;box-shadow:var(--shadow);
+  transition:transform .15s;-webkit-tap-highlight-color:transparent;text-align:left}
+.mode-card:active{transform:scale(.95)}
+.mode-card.toddler{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff}
+.mode-card.learner{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff}
+.mode-icon{font-size:3rem}
+.mode-info h3{font-size:1.3rem;font-weight:800}
+.mode-info p{font-size:.85rem;opacity:.9;margin-top:4px}
+
+/* ===== BACK BTN ===== */
+.back-btn{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.85);
+  border:none;border-radius:50px;padding:10px 18px;font-size:.9rem;font-weight:700;
+  cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:10;
+  display:flex;align-items:center;gap:6px;color:#555;transition:transform .1s}
+.back-btn:active{transform:scale(.92)}
+
+/* ===== TODDLER MODE ===== */
+#toddler{background:linear-gradient(160deg,#ffeaa7,#fdcb6e)}
+.toddler-card{background:#fff;border-radius:var(--radius);padding:24px;
+  box-shadow:var(--shadow);width:100%;max-width:360px;text-align:center}
+.toddler-img{font-size:7rem;line-height:1;display:block;margin-bottom:16px;
+  cursor:pointer;transition:transform .2s;user-select:none}
+.toddler-img:active{transform:scale(1.15)}
+.toddler-en{font-size:2rem;font-weight:900;color:#333;margin-bottom:4px}
+.toddler-np{font-size:2rem;font-weight:900;color:var(--purple);margin-bottom:16px}
+.tap-hint{font-size:.85rem;color:#999;margin-bottom:20px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.nav-row{display:flex;justify-content:space-between;gap:12px}
+.nav-btn{flex:1;border:none;border-radius:16px;padding:16px;font-size:1rem;
+  font-weight:800;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent}
+.nav-btn:active{transform:scale(.93)}
+.nav-btn.prev{background:#dfe6e9;color:#555}
+.nav-btn.next{background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:#fff}
+.progress-dots{display:flex;justify-content:center;gap:8px;margin-bottom:16px}
+.dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:background .3s}
+.dot.active{background:var(--purple)}
+
+/* ===== LEARNER MODE TABS ===== */
+#learner{background:linear-gradient(160deg,#e0f7fa,#b2ebf2)}
+.learner-tabs{display:flex;gap:10px;margin-bottom:20px;background:rgba(255,255,255,.6);
+  border-radius:50px;padding:6px;width:100%;max-width:360px}
+.tab-btn{flex:1;border:none;border-radius:50px;padding:10px;font-size:.85rem;
+  font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:#555}
+.tab-btn.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.score-badge{background:linear-gradient(135deg,var(--yellow),var(--orange));
+  color:#fff;font-weight:800;padding:8px 18px;border-radius:50px;font-size:1rem;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);margin-bottom:16px}
+
+/* ===== QUIZ ===== */
+.quiz-wrap{width:100%;max-width:360px}
+.quiz-q{background:#fff;border-radius:var(--radius);padding:20px;
+  text-align:center;box-shadow:var(--shadow);margin-bottom:16px}
+.quiz-q-label{font-size:.85rem;color:#999;margin-bottom:6px}
+.quiz-q-text{font-size:1.8rem;font-weight:900;color:#333}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.quiz-opt{border:3px solid transparent;border-radius:16px;padding:16px 8px;
+  background:#fff;cursor:pointer;text-align:center;font-size:.95rem;font-weight:700;
+  box-shadow:var(--shadow);transition:transform .15s,border-color .2s;
+  -webkit-tap-highlight-color:transparent}
+.quiz-opt:active{transform:scale(.93)}
+.quiz-opt-emoji{font-size:2.2rem;display:block;margin-bottom:6px}
+.quiz-opt.correct{border-color:var(--green);background:#e8f8f0;animation:correctPop .4s}
+.quiz-opt.wrong{border-color:var(--red);background:#fde8e8;animation:shake .3s}
+@keyframes correctPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}100%{transform:translateX(0)}}
+.quiz-progress{font-size:.85rem;color:#888;text-align:right;margin-bottom:8px}
+
+/* ===== DRAG & DROP ===== */
+.dnd-wrap{width:100%;max-width:360px}
+.dnd-title{font-size:1rem;font-weight:700;color:#555;text-align:center;margin-bottom:16px}
+.dnd-row{display:flex;gap:12px;margin-bottom:16px}
+.dnd-col{flex:1;display:flex;flex-direction:column;gap:10px}
+.dnd-col-label{font-size:.8rem;font-weight:700;color:#888;text-align:center;
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.drag-item{background:#fff;border-radius:14px;padding:14px 10px;text-align:center;
+  font-size:1rem;font-weight:700;box-shadow:var(--shadow);cursor:grab;
+  border:3px solid transparent;transition:transform .15s,border-color .2s;
+  user-select:none;-webkit-tap-highlight-color:transparent;position:relative}
+.drag-item:active{cursor:grabbing;transform:scale(1.06)}
+.drag-item.dragging{opacity:.5;transform:scale(1.06)}
+.drop-zone{background:rgba(255,255,255,.5);border:3px dashed #ccc;border-radius:14px;
+  padding:14px 10px;text-align:center;font-size:1rem;font-weight:700;
+  min-height:54px;transition:border-color .2s,background .2s;color:#bbb}
+.drop-zone.over{border-color:var(--blue);background:rgba(52,152,219,.1)}
+.drop-zone.matched{border-color:var(--green);background:rgba(46,204,113,.1);
+  color:var(--green);border-style:solid}
+.drop-zone.wrong-drop{border-color:var(--red);animation:shake .3s}
+
+/* ===== CONFETTI ===== */
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:999}
+
+/* ===== STARS ===== */
+.stars-anim{position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);
+  font-size:4rem;animation:starPop .8s forwards;z-index:998;pointer-events:none}
+@keyframes starPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  60%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}
+  100%{opacity:0;transform:translate(-50%,-60%) scale(1)}}
+
+/* ===== RESULT SCREEN ===== */
+#result{background:linear-gradient(135deg,#667eea,#764ba2)}
+.result-emoji{font-size:6rem;animation:bounce 1s infinite alternate;margin-bottom:16px}
+.result-title{font-size:2rem;font-weight:900;color:#fff;margin-bottom:8px;text-align:center}
+.result-score{font-size:1.2rem;color:rgba(255,255,255,.85);margin-bottom:28px;text-align:center}
+.result-btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:280px}
+.result-btn{border:none;border-radius:50px;padding:18px;font-size:1.1rem;font-weight:800;
+  cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent}
+.result-btn:active{transform:scale(.95)}
+.result-btn.home{background:#fff;color:var(--purple)}
+.result-btn.retry{background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.5)}
+
+/* ===== UTILS ===== */
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div id="app">
+
+  <!-- SPLASH -->
+  <div class="screen active" id="splash">
+    <span class="splash-emoji">🌏</span>
+    <div class="splash-logo">DualLingo Kids</div>
+    <div class="splash-sub">Learn Nepali • Learn English</div>
+  </div>
+
+  <!-- HOME -->
+  <div class="screen" id="home">
+    <div class="home-title">🎉 DualLingo Kids</div>
+    <div class="home-sub">What do you want to learn today?</div>
+    <div class="category-grid">
+      <button class="cat-btn animals" onclick="selectCategory('animals')">
+        <span class="cat-emoji">🦁</span>
+        <span class="cat-label">Animals</span>
+      </button>
+      <button class="cat-btn alphabets" onclick="selectCategory('alphabets')">
+        <span class="cat-emoji">🔤</span>
+        <span class="cat-label">Alphabets</span>
+      </button>
+      <button class="cat-btn numbers" onclick="selectCategory('numbers')">
+        <span class="cat-emoji">🔢</span>
+        <span class="cat-label">Numbers</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODE SELECT -->
+  <div class="screen" id="modeSelect">
+    <button class="back-btn" onclick="showScreen('home')">← Back</button>
+    <div class="mode-title">Choose Your Mode</div>
+    <div class="mode-sub" id="modeSubText">Pick how you want to play!</div>
+    <div class="mode-cards">
+      <button class="mode-card toddler" onclick="startMode('toddler')">
+        <span class="mode-icon">👶</span>
+        <div class="mode-info">
+          <h3>Toddler Mode</h3>
+          <p>Tap & listen! Ages 3–4</p>
+        </div>
+      </button>
+      <button class="mode-card learner" onclick="startMode('learner')">
+        <span class="mode-icon">🧠</span>
+        <div class="mode-info">
+          <h3>Learner Mode</h3>
+          <p>Quiz & match! Ages 5–7</p>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- TODDLER -->
+  <div class="screen" id="toddler">
+    <button class="back-btn" onclick="showScreen('modeSelect')">← Back</button>
+    <div class="toddler-card">
+      <div class="progress-dots" id="toddlerDots"></div>
+      <span class="toddler-img" id="toddlerEmoji" onclick="speakCurrent()">🐄</span>
+      <div class="toddler-en" id="toddlerEn">Cow</div>
+      <div class="toddler-np" id="toddlerNp">गाई</div>
+      <div class="tap-hint">👆 Tap to hear!</div>
+      <div class="nav-row">
+        <button class="nav-btn prev" onclick="toddlerNav(-1)">◀ Prev</button>
+        <button class="nav-btn next" onclick="toddlerNav(1)">Next ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEARNER -->
+  <div class="screen" id="learner">
+    <button class="back-btn" onclick="showScreen('modeSelect')">← Back</button>
+    <div class="score-badge">⭐ Score: <span id="scoreDisplay">0</span></div>
+    <div class="learner-tabs">
+      <button class="tab-btn active" id="tabQuiz" onclick="switchTab('quiz')">🎯 Quiz</button>
+      <button class="tab-btn" id="tabDnd" onclick="switchTab('dnd')">🔗 Match</button>
+    </div>
+    <!-- QUIZ -->
+    <div id="quizPanel" class="quiz-wrap">
+      <div class="quiz-progress" id="quizProgress">1 / 5</div>
+      <div class="quiz-q">
+        <div class="quiz-q-label">Which one is...</div>
+        <div class="quiz-q-text" id="quizQuestion">गाई</div>
+      </div>
+      <div class="quiz-opts" id="quizOpts"></div>
+    </div>
+    <!-- DRAG & DROP -->
+    <div id="dndPanel" class="dnd-wrap hidden">
+      <div class="dnd-title">🔗 Drag the English word to its Nepali match!</div>
+      <div class="dnd-row">
+        <div class="dnd-col">
+          <div class="dnd-col-label">English</div>
+          <div id="dragItems"></div>
+        </div>
+        <div class="dnd-col">
+          <div class="dnd-col-label">Nepali</div>
+          <div id="dropZones"></div>
+        </div>
+      </div>
+      <button class="nav-btn next" style="width:100%;margin-top:8px" onclick="resetDnd()">🔄 Reset</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="result">
+    <div class="result-emoji">🏆</div>
+    <div class="result-title">Amazing!</div>
+    <div class="result-score" id="resultScore">You scored 50 points!</div>
+    <div class="result-btns">
+      <button class="result-btn home" onclick="goHome()">🏠 Home</button>
+      <button class="result-btn retry" onclick="retryMode()">🔄 Play Again</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===== DATA =====
+const DATA = {
+  animals:[
+    {english:"Cow",    nepali:"गाई",    emoji:"🐄", sound:"moo"},
+    {english:"Dog",    nepali:"कुकुर",   emoji:"🐕", sound:"woof"},
+    {english:"Cat",    nepali:"बिरालो", emoji:"🐱", sound:"meow"},
+    {english:"Lion",   nepali:"सिंह",   emoji:"🦁", sound:"roar"},
+    {english:"Elephant",nepali:"हात्ती",emoji:"🐘", sound:"trumpet"},
+    {english:"Monkey", nepali:"बाँदर",  emoji:"🐒", sound:"chatter"},
+    {english:"Bird",   nepali:"चरा",    emoji:"🐦", sound:"tweet"},
+  ],
+  alphabets:[
+    {english:"A – Apple",  nepali:"अ – अनार",   emoji:"🍎"},
+    {english:"B – Ball",   nepali:"ब – बाँस",   emoji:"⚽"},
+    {english:"C – Cat",    nepali:"क – किताब",  emoji:"🐱"},
+    {english:"D – Dog",    nepali:"ड – डमरु",   emoji:"🐕"},
+    {english:"E – Elephant",nepali:"ए – एभोकाडो",emoji:"🐘"},
+    {english:"F – Fish",   nepali:"फ – फूल",    emoji:"🐟"},
+  ],
+  numbers:[
+    {english:"One",   nepali:"एक",    emoji:"1️⃣"},
+    {english:"Two",   nepali:"दुई",   emoji:"2️⃣"},
+    {english:"Three", nepali:"तीन",   emoji:"3️⃣"},
+    {english:"Four",  nepali:"चार",   emoji:"4️⃣"},
+    {english:"Five",  nepali:"पाँच",  emoji:"5️⃣"},
+  ]
+};
+
+// ===== STATE =====
+let state = {
+  screen:"splash", category:"animals", mode:"toddler",
+  toddlerIdx:0, score:0, quizIdx:0, quizItems:[],
+  tab:"quiz", dndDragging:null, dndMatches:0, dndTotal:0,
+  quizAnswered:false
+};
+
+// ===== SCREEN NAV =====
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  state.screen=id;
+}
+
+// ===== SPLASH =====
+setTimeout(()=>showScreen('home'), 2200);
+
+// ===== CATEGORY =====
+function selectCategory(cat){
+  state.category=cat;
+  document.getElementById('modeSubText').textContent=
+    "Playing: " + cat.charAt(0).toUpperCase()+cat.slice(1);
+  showScreen('modeSelect');
+}
+
+// ===== MODE =====
+function startMode(mode){
+  state.mode=mode;
+  state.score=0;
+  updateScore();
+  if(mode==='toddler'){
+    state.toddlerIdx=0;
+    renderToddler();
+    showScreen('toddler');
+  } else {
+    state.tab='quiz';
+    switchTab('quiz');
+    buildQuiz();
+    buildDnd();
+    showScreen('learner');
+  }
+}
+
+// ===== TODDLER =====
+function renderToddler(){
+  const items=DATA[state.category];
+  const item=items[state.toddlerIdx];
+  document.getElementById('toddlerEmoji').textContent=item.emoji;
+  document.getElementById('toddlerEn').textContent=item.english;
+  document.getElementById('toddlerNp').textContent=item.nepali;
+  // dots
+  const dots=document.getElementById('toddlerDots');
+  dots.innerHTML=items.map((_,i)=>
+    `<div class="dot${i===state.toddlerIdx?' active':''}"></div>`).join('');
+}
+function toddlerNav(dir){
+  const items=DATA[state.category];
+  state.toddlerIdx=(state.toddlerIdx+dir+items.length)%items.length;
+  renderToddler();
+  playClick();
+}
+function speakCurrent(){
+  const item=DATA[state.category][state.toddlerIdx];
+  speak(item.english,'en-US');
+  setTimeout(()=>speak(item.nepali,'hi-IN'),1200);
+  playClick();
+  // bounce emoji
+  const el=document.getElementById('toddlerEmoji');
+  el.style.transform='scale(1.3)';
+  setTimeout(()=>el.style.transform='',400);
+}
+
+// ===== SPEECH =====
+function speak(text,lang){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=lang; u.rate=0.85; u.pitch=1.1;
+  window.speechSynthesis.speak(u);
+}
+
+// ===== AUDIO (Web Audio API) =====
+const AC=window.AudioContext||window.webkitAudioContext;
+let ctx;
+function getCtx(){if(!ctx) ctx=new AC(); return ctx;}
+
+function playClick(){
+  try{
+    const c=getCtx(),o=c.createOscillator(),g=c.createGain();
+    o.connect(g);g.connect(c.destination);
+    o.frequency.value=600;g.gain.setValueAtTime(.3,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.1);
+    o.start();o.stop(c.currentTime+.1);
+  }catch(e){}
+}
+function playCorrect(){
+  try{
+    const c=getCtx();
+    [[523,.0],[659,.15],[784,.3],[1047,.5]].forEach(([f,t])=>{
+      const o=c.createOscillator(),g=c.createGain();
+      o.connect(g);g.connect(c.destination);
+      o.frequency.value=f;g.gain.setValueAtTime(.25,c.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+.25);
+      o.start(c.currentTime+t);o.stop(c.currentTime+t+.25);
+    });
+  }catch(e){}
+}
+function playWrong(){
+  try{
+    const c=getCtx(),o=c.createOscillator(),g=c.createGain();
+    o.connect(g);g.connect(c.destination);
+    o.type='sawtooth';o.frequency.value=180;
+    g.gain.setValueAtTime(.25,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.4);
+    o.start();o.stop(c.currentTime+.4);
+  }catch(e){}
+}
+
+// ===== QUIZ =====
+function buildQuiz(){
+  const all=[...DATA[state.category]];
+  // shuffle
+  state.quizItems=all.sort(()=>Math.random()-.5).slice(0,Math.min(5,all.length));
+  state.quizIdx=0;
+  renderQuiz();
+}
+function renderQuiz(){
+  const items=state.quizItems;
+  const correct=items[state.quizIdx];
+  state.quizAnswered=false;
+  document.getElementById('quizProgress').textContent=
+    `${state.quizIdx+1} / ${items.length}`;
+  document.getElementById('quizQuestion').textContent=correct.nepali;
+  // speak the question
+  setTimeout(()=>speak(correct.english,'en-US'),400);
+
+  // build 3 options: correct + 2 random wrong
+  const pool=[...DATA[state.category]].filter(x=>x!==correct);
+  const wrong=pool.sort(()=>Math.random()-.5).slice(0,2);
+  const opts=[correct,...wrong].sort(()=>Math.random()-.5);
+
+  const container=document.getElementById('quizOpts');
+  container.innerHTML=opts.map(opt=>`
+    <button class="quiz-opt" onclick="checkAnswer(this,'${opt.english}','${correct.english}')">
+      <span class="quiz-opt-emoji">${opt.emoji}</span>
+      <span>${opt.english}</span>
+    </button>`).join('');
+}
+function checkAnswer(el,chosen,correct){
+  if(state.quizAnswered) return;
+  state.quizAnswered=true;
+  if(chosen===correct){
+    el.classList.add('correct');
+    state.score+=10; updateScore();
+    playCorrect();
+    showStar();
+    setTimeout(nextQuiz,1200);
+  } else {
+    el.classList.add('wrong');
+    // highlight correct
+    document.querySelectorAll('.quiz-opt').forEach(b=>{
+      if(b.querySelector('span:last-child').textContent===correct)
+        b.classList.add('correct');
+    });
+    playWrong();
+    setTimeout(()=>{
+      document.querySelectorAll('.quiz-opt').forEach(b=>{
+        b.classList.remove('wrong','correct');
+      });
+      state.quizAnswered=false;
+    },1000);
+  }
+}
+function nextQuiz(){
+  state.quizIdx++;
+  if(state.quizIdx>=state.quizItems.length){
+    showResult(); return;
+  }
+  renderQuiz();
+}
+
+// ===== DRAG & DROP =====
+function buildDnd(){
+  const items=[...DATA[state.category]].sort(()=>Math.random()-.5).slice(0,4);
+  state.dndTotal=items.length; state.dndMatches=0;
+  const nepalis=[...items].sort(()=>Math.random()-.5);
+
+  const dragCont=document.getElementById('dragItems');
+  const dropCont=document.getElementById('dropZones');
+  dragCont.innerHTML=''; dropCont.innerHTML='';
+
+  items.forEach(item=>{
+    const d=document.createElement('div');
+    d.className='drag-item'; d.textContent=item.english;
+    d.dataset.key=item.english;
+    d.draggable=true;
+    d.addEventListener('dragstart',e=>{
+      state.dndDragging=item.english;
+      d.classList.add('dragging');
+    });
+    d.addEventListener('dragend',()=>d.classList.remove('dragging'));
+    // touch
+    d.addEventListener('touchstart',touchStart,{passive:true});
+    d.addEventListener('touchmove',touchMove,{passive:false});
+    d.addEventListener('touchend',touchEnd);
+    dragCont.appendChild(d);
+  });
+
+  nepalis.forEach(item=>{
+    const z=document.createElement('div');
+    z.className='drop-zone'; z.textContent=item.nepali;
+    z.dataset.key=item.english;
+    z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over')});
+    z.addEventListener('dragleave',()=>z.classList.remove('over'));
+    z.addEventListener('drop',e=>{
+      e.preventDefault(); z.classList.remove('over');
+      handleDrop(z);
+    });
+    dropCont.appendChild(z);
+  });
+}
+function handleDrop(zone){
+  const drag=state.dndDragging;
+  if(!drag) return;
+  if(drag===zone.dataset.key){
+    zone.classList.add('matched');
+    zone.textContent='✅ '+zone.textContent;
+    // hide drag item
+    document.querySelectorAll('.drag-item').forEach(d=>{
+      if(d.dataset.key===drag) d.style.visibility='hidden';
+    });
+    playCorrect(); showStar();
+    state.score+=10; updateScore();
+    state.dndMatches++;
+    if(state.dndMatches===state.dndTotal) setTimeout(showResult,1000);
+  } else {
+    zone.classList.add('wrong-drop');
+    playWrong();
+    setTimeout(()=>zone.classList.remove('wrong-drop'),400);
+  }
+  state.dndDragging=null;
+}
+function resetDnd(){buildDnd();playClick();}
+
+// ===== TOUCH DRAG =====
+let touchDragEl=null,touchClone=null;
+function touchStart(e){
+  touchDragEl=e.currentTarget;
+  state.dndDragging=touchDragEl.dataset.key;
+  touchClone=touchDragEl.cloneNode(true);
+  touchClone.style.cssText=`position:fixed;opacity:.8;pointer-events:none;z-index:999;
+    width:${touchDragEl.offsetWidth}px;font-size:.95rem;font-weight:700;
+    background:#fff;border-radius:14px;padding:14px 10px;text-align:center;
+    box-shadow:0 4px 16px rgba(0,0,0,.2)`;
+  document.body.appendChild(touchClone);
+}
+function touchMove(e){
+  e.preventDefault();
+  const t=e.touches[0];
+  touchClone.style.left=t.clientX-touchDragEl.offsetWidth/2+'px';
+  touchClone.style.top=t.clientY-30+'px';
+}
+function touchEnd(e){
+  if(touchClone){document.body.removeChild(touchClone);touchClone=null;}
+  const t=e.changedTouches[0];
+  const el=document.elementFromPoint(t.clientX,t.clientY);
+  if(el&&el.classList.contains('drop-zone')) handleDrop(el);
+  else state.dndDragging=null;
+}
+
+// ===== TABS =====
+function switchTab(tab){
+  state.tab=tab;
+  document.getElementById('quizPanel').classList.toggle('hidden',tab!=='quiz');
+  document.getElementById('dndPanel').classList.toggle('hidden',tab!=='dnd');
+  document.getElementById('tabQuiz').classList.toggle('active',tab==='quiz');
+  document.getElementById('tabDnd').classList.toggle('active',tab==='dnd');
+  if(tab==='quiz') buildQuiz();
+  else buildDnd();
+  playClick();
+}
+
+// ===== SCORE =====
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent=state.score;
+}
+
+// ===== RESULT =====
+function showResult(){
+  document.getElementById('resultScore').textContent=
+    `🌟 You scored ${state.score} points!`;
+  launchConfetti();
+  showScreen('result');
+}
+function goHome(){showScreen('home');state.score=0;}
+function retryMode(){startMode(state.mode);}
+
+// ===== STAR ANIM =====
+function showStar(){
+  const el=document.createElement('div');
+  el.className='stars-anim';
+  el.textContent='⭐';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),900);
+}
+
+// ===== CONFETTI =====
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  const ctx2=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const pieces=Array.from({length:120},()=>({
+    x:Math.random()*canvas.width, y:-20,
+    w:8+Math.random()*8, h:14+Math.random()*8,
+    r:Math.random()*Math.PI*2,
+    vx:(Math.random()-0.5)*4, vy:3+Math.random()*4,
+    vr:(Math.random()-0.5)*.15,
+    color:`hsl(${Math.random()*360},90%,60%)`
+  }));
+  let frame=0;
+  function draw(){
+    ctx2.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.r+=p.vr;
+      ctx2.save(); ctx2.translate(p.x,p.y); ctx2.rotate(p.r);
+      ctx2.fillStyle=p.color;
+      ctx2.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx2.restore();
+    });
+    frame++;
+    if(frame<140) requestAnimationFrame(draw);
+    else ctx2.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+</script>
+</body>
+</html>

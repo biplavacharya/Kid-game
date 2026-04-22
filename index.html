@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DualLingo Kids</title>
+<title>Nepa-angrezi</title>
 <style>
-/* ===== RESET & BASE ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --pink:#FF6B9D;--purple:#9B59B6;--blue:#3498DB;--green:#2ECC71;
@@ -16,158 +15,177 @@
 body{font-family:var(--font);background:var(--bg);min-height:100vh;
   display:flex;align-items:center;justify-content:center;overflow:hidden;
   touch-action:manipulation}
-#app{width:100%;max-width:480px;min-height:100vh;position:relative;
+#app{width:100%;max-width:500px;min-height:100vh;position:relative;
   display:flex;flex-direction:column;background:var(--bg)}
-
-/* ===== SCREENS ===== */
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:20px;
-  transition:opacity .4s,transform .4s;opacity:0;pointer-events:none;transform:scale(.95)}
+  transition:opacity .4s,transform .4s;opacity:0;pointer-events:none;transform:scale(.95);
+  overflow-y:auto}
 .screen.active{opacity:1;pointer-events:all;transform:scale(1)}
 
-/* ===== SPLASH ===== */
-#splash{background:linear-gradient(135deg,#667eea,#764ba2)}
-.splash-logo{font-size:3.2rem;font-weight:900;color:#fff;text-align:center;
-  animation:bounce 1s infinite alternate;text-shadow:0 4px 12px rgba(0,0,0,.3)}
-.splash-sub{color:rgba(255,255,255,.85);font-size:1.1rem;margin-top:8px;text-align:center}
-.splash-emoji{font-size:5rem;animation:spin 3s linear infinite;display:block;margin-bottom:16px}
-@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-12px)}}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+/* SPLASH */
+#splash{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)}
+.splash-flag{font-size:4rem;margin-bottom:8px;animation:floatY 2s infinite alternate ease-in-out}
+@keyframes floatY{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+.splash-logo{font-size:2.6rem;font-weight:900;color:#fff;text-align:center;
+  text-shadow:0 0 30px rgba(255,200,0,.6);letter-spacing:-1px}
+.splash-np{font-size:1.1rem;color:#f1c40f;margin-top:4px;text-align:center;font-weight:600}
+.splash-tagline{color:rgba(255,255,255,.6);font-size:.85rem;margin-top:6px;text-align:center}
+.splash-btn{margin-top:32px;background:linear-gradient(135deg,#f1c40f,#e67e22);
+  border:none;border-radius:50px;padding:16px 48px;font-size:1.1rem;font-weight:800;
+  color:#1a1a2e;cursor:pointer;box-shadow:0 4px 20px rgba(241,196,15,.5);
+  animation:pulse 1.8s infinite;-webkit-tap-highlight-color:transparent}
+@keyframes pulse{0%,100%{box-shadow:0 4px 20px rgba(241,196,15,.4)}
+  50%{box-shadow:0 4px 40px rgba(241,196,15,.9)}}
+.splash-btn:active{transform:scale(.95)}
 
-/* ===== HOME ===== */
-#home{background:linear-gradient(160deg,#ffecd2,#fcb69f)}
-.home-title{font-size:2rem;font-weight:900;color:#5a2d82;margin-bottom:6px;text-align:center}
-.home-sub{color:#7a4f6d;font-size:.95rem;margin-bottom:28px;text-align:center}
-.category-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:360px}
-.cat-btn{background:var(--card);border:none;border-radius:var(--radius);
-  padding:24px 16px;cursor:pointer;box-shadow:var(--shadow);
-  display:flex;flex-direction:column;align-items:center;gap:10px;
-  transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent}
-.cat-btn:active{transform:scale(.93);box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.cat-emoji{font-size:3.2rem;line-height:1}
-.cat-label{font-size:1rem;font-weight:700;color:#333}
-.cat-btn.animals{border-top:6px solid var(--green)}
-.cat-btn.alphabets{border-top:6px solid var(--blue)}
-.cat-btn.numbers{border-top:6px solid var(--orange)}
-
-/* ===== MODE SELECT ===== */
-#modeSelect{background:linear-gradient(135deg,#a8edea,#fed6e3)}
-.mode-title{font-size:1.6rem;font-weight:900;color:#333;margin-bottom:8px;text-align:center}
-.mode-sub{color:#666;font-size:.9rem;margin-bottom:32px;text-align:center}
-.mode-cards{display:flex;flex-direction:column;gap:20px;width:100%;max-width:340px}
-.mode-card{border:none;border-radius:var(--radius);padding:28px 20px;cursor:pointer;
+/* MODE SELECT (global) */
+#globalMode{background:linear-gradient(135deg,#0f3460,#533483)}
+.gmode-title{font-size:1.8rem;font-weight:900;color:#fff;text-align:center;margin-bottom:6px}
+.gmode-sub{color:rgba(255,255,255,.7);font-size:.9rem;text-align:center;margin-bottom:32px}
+.gmode-cards{display:flex;flex-direction:column;gap:20px;width:100%;max-width:360px}
+.gmode-card{border:none;border-radius:var(--radius);padding:28px 22px;cursor:pointer;
   display:flex;align-items:center;gap:18px;box-shadow:var(--shadow);
   transition:transform .15s;-webkit-tap-highlight-color:transparent;text-align:left}
-.mode-card:active{transform:scale(.95)}
-.mode-card.toddler{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff}
-.mode-card.learner{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff}
-.mode-icon{font-size:3rem}
-.mode-info h3{font-size:1.3rem;font-weight:800}
-.mode-info p{font-size:.85rem;opacity:.9;margin-top:4px}
+.gmode-card:active{transform:scale(.95)}
+.gmode-card.toddler{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.gmode-card.learner{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.gmode-icon{font-size:3rem}
+.gmode-info h3{font-size:1.3rem;font-weight:800;color:#fff}
+.gmode-info p{font-size:.85rem;color:rgba(255,255,255,.9);margin-top:4px}
 
-/* ===== BACK BTN ===== */
-.back-btn{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.85);
-  border:none;border-radius:50px;padding:10px 18px;font-size:.9rem;font-weight:700;
-  cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:10;
-  display:flex;align-items:center;gap:6px;color:#555;transition:transform .1s}
+/* HOME */
+#home{background:linear-gradient(160deg,#1a1a2e,#16213e);padding-top:60px;padding-bottom:20px;
+  justify-content:flex-start}
+.home-header{text-align:center;margin-bottom:20px;padding-top:16px}
+.home-title{font-size:1.6rem;font-weight:900;color:#f1c40f}
+.home-mode-badge{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);
+  border-radius:50px;padding:6px 16px;font-size:.8rem;margin-top:6px;display:inline-block}
+.home-sub{color:rgba(255,255,255,.6);font-size:.85rem;margin-top:4px}
+.category-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:460px}
+.cat-btn{background:var(--card);border:none;border-radius:20px;
+  padding:20px 12px;cursor:pointer;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  transition:transform .15s;-webkit-tap-highlight-color:transparent}
+.cat-btn:active{transform:scale(.93)}
+.cat-emoji{font-size:2.6rem;line-height:1}
+.cat-label-en{font-size:.95rem;font-weight:800;color:#333}
+.cat-label-np{font-size:.8rem;font-weight:600;color:#888}
+.cat-btn.animals{border-top:5px solid #2ECC71}
+.cat-btn.alphabets{border-top:5px solid #3498DB}
+.cat-btn.numbers{border-top:5px solid #FF8C42}
+.cat-btn.bodyparts{border-top:5px solid #E74C3C}
+.cat-btn.colors{border-top:5px solid #9B59B6}
+.cat-btn.solar{border-top:5px solid #1ABC9C}
+.cat-btn.vehicles{border-top:5px solid #F1C40F}
+.cat-btn.fruits{border-top:5px solid #FF6B9D}
+.cat-btn.vegetables{border-top:5px solid #27AE60}
+.switch-mode-btn{margin-top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  border-radius:50px;padding:10px 24px;color:rgba(255,255,255,.7);font-size:.85rem;
+  cursor:pointer;-webkit-tap-highlight-color:transparent}
+.switch-mode-btn:active{background:rgba(255,255,255,.2)}
+
+/* BACK BTN */
+.back-btn{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.15);
+  border:none;border-radius:50px;padding:10px 18px;font-size:.85rem;font-weight:700;
+  cursor:pointer;z-index:10;display:flex;align-items:center;gap:6px;
+  color:#fff;transition:transform .1s;-webkit-tap-highlight-color:transparent}
 .back-btn:active{transform:scale(.92)}
 
-/* ===== TODDLER MODE ===== */
-#toddler{background:linear-gradient(160deg,#ffeaa7,#fdcb6e)}
+/* TODDLER */
+#toddler{background:linear-gradient(160deg,#1a1a2e,#16213e)}
 .toddler-card{background:#fff;border-radius:var(--radius);padding:24px;
-  box-shadow:var(--shadow);width:100%;max-width:360px;text-align:center}
-.toddler-img{font-size:7rem;line-height:1;display:block;margin-bottom:16px;
+  box-shadow:var(--shadow);width:100%;max-width:380px;text-align:center}
+.cat-tag{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  color:#fff;padding:4px 14px;border-radius:50px;display:inline-block;margin-bottom:14px}
+.toddler-img{font-size:6.5rem;line-height:1;display:block;margin-bottom:14px;
   cursor:pointer;transition:transform .2s;user-select:none}
-.toddler-img:active{transform:scale(1.15)}
-.toddler-en{font-size:2rem;font-weight:900;color:#333;margin-bottom:4px}
-.toddler-np{font-size:2rem;font-weight:900;color:var(--purple);margin-bottom:16px}
-.tap-hint{font-size:.85rem;color:#999;margin-bottom:20px;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.toddler-img:active{transform:scale(1.2)}
+.toddler-en{font-size:1.9rem;font-weight:900;color:#333;margin-bottom:4px}
+.toddler-np{font-size:1.9rem;font-weight:900;color:var(--purple);margin-bottom:14px}
+.tap-hint{font-size:.82rem;color:#bbb;margin-bottom:18px;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
 .nav-row{display:flex;justify-content:space-between;gap:12px}
-.nav-btn{flex:1;border:none;border-radius:16px;padding:16px;font-size:1rem;
+.nav-btn{flex:1;border:none;border-radius:14px;padding:15px;font-size:.95rem;
   font-weight:800;cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent}
 .nav-btn:active{transform:scale(.93)}
-.nav-btn.prev{background:#dfe6e9;color:#555}
+.nav-btn.prev{background:#eee;color:#555}
 .nav-btn.next{background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:#fff}
-.progress-dots{display:flex;justify-content:center;gap:8px;margin-bottom:16px}
-.dot{width:10px;height:10px;border-radius:50%;background:#ddd;transition:background .3s}
+.progress-dots{display:flex;justify-content:center;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;transition:background .3s}
 .dot.active{background:var(--purple)}
+.item-counter{font-size:.8rem;color:#aaa;margin-bottom:10px}
 
-/* ===== LEARNER MODE TABS ===== */
-#learner{background:linear-gradient(160deg,#e0f7fa,#b2ebf2)}
-.learner-tabs{display:flex;gap:10px;margin-bottom:20px;background:rgba(255,255,255,.6);
-  border-radius:50px;padding:6px;width:100%;max-width:360px}
-.tab-btn{flex:1;border:none;border-radius:50px;padding:10px;font-size:.85rem;
-  font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:#555}
-.tab-btn.active{background:#fff;color:var(--blue);box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.score-badge{background:linear-gradient(135deg,var(--yellow),var(--orange));
-  color:#fff;font-weight:800;padding:8px 18px;border-radius:50px;font-size:1rem;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);margin-bottom:16px}
-
-/* ===== QUIZ ===== */
-.quiz-wrap{width:100%;max-width:360px}
+/* LEARNER */
+#learner{background:linear-gradient(160deg,#0f3460,#16213e);padding-top:70px;padding-bottom:20px;
+  justify-content:flex-start}
+.learner-tabs{display:flex;gap:8px;margin-bottom:16px;background:rgba(255,255,255,.1);
+  border-radius:50px;padding:5px;width:100%;max-width:380px}
+.tab-btn{flex:1;border:none;border-radius:50px;padding:9px 6px;font-size:.8rem;
+  font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:rgba(255,255,255,.6)}
+.tab-btn.active{background:#fff;color:var(--blue)}
+.score-badge{background:linear-gradient(135deg,#f1c40f,#e67e22);
+  color:#1a1a2e;font-weight:800;padding:7px 18px;border-radius:50px;font-size:.95rem;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);margin-bottom:14px}
+.quiz-wrap,.dnd-wrap{width:100%;max-width:380px}
+.quiz-progress{font-size:.82rem;color:rgba(255,255,255,.6);text-align:right;margin-bottom:8px}
 .quiz-q{background:#fff;border-radius:var(--radius);padding:20px;
-  text-align:center;box-shadow:var(--shadow);margin-bottom:16px}
-.quiz-q-label{font-size:.85rem;color:#999;margin-bottom:6px}
-.quiz-q-text{font-size:1.8rem;font-weight:900;color:#333}
-.quiz-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.quiz-opt{border:3px solid transparent;border-radius:16px;padding:16px 8px;
-  background:#fff;cursor:pointer;text-align:center;font-size:.95rem;font-weight:700;
+  text-align:center;box-shadow:var(--shadow);margin-bottom:14px}
+.quiz-q-label{font-size:.8rem;color:#999;margin-bottom:5px}
+.quiz-q-text{font-size:2rem;font-weight:900;color:#333}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.quiz-opt{border:3px solid transparent;border-radius:14px;padding:14px 6px;
+  background:#fff;cursor:pointer;text-align:center;font-size:.88rem;font-weight:700;
   box-shadow:var(--shadow);transition:transform .15s,border-color .2s;
   -webkit-tap-highlight-color:transparent}
 .quiz-opt:active{transform:scale(.93)}
-.quiz-opt-emoji{font-size:2.2rem;display:block;margin-bottom:6px}
+.quiz-opt-emoji{font-size:2rem;display:block;margin-bottom:5px}
 .quiz-opt.correct{border-color:var(--green);background:#e8f8f0;animation:correctPop .4s}
 .quiz-opt.wrong{border-color:var(--red);background:#fde8e8;animation:shake .3s}
 @keyframes correctPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
 @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}100%{transform:translateX(0)}}
-.quiz-progress{font-size:.85rem;color:#888;text-align:right;margin-bottom:8px}
-
-/* ===== DRAG & DROP ===== */
-.dnd-wrap{width:100%;max-width:360px}
-.dnd-title{font-size:1rem;font-weight:700;color:#555;text-align:center;margin-bottom:16px}
-.dnd-row{display:flex;gap:12px;margin-bottom:16px}
-.dnd-col{flex:1;display:flex;flex-direction:column;gap:10px}
-.dnd-col-label{font-size:.8rem;font-weight:700;color:#888;text-align:center;
-  text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.drag-item{background:#fff;border-radius:14px;padding:14px 10px;text-align:center;
-  font-size:1rem;font-weight:700;box-shadow:var(--shadow);cursor:grab;
-  border:3px solid transparent;transition:transform .15s,border-color .2s;
-  user-select:none;-webkit-tap-highlight-color:transparent;position:relative}
+.dnd-title{font-size:.9rem;font-weight:700;color:rgba(255,255,255,.8);text-align:center;margin-bottom:14px}
+.dnd-row{display:flex;gap:10px;margin-bottom:14px}
+.dnd-col{flex:1;display:flex;flex-direction:column;gap:8px}
+.dnd-col-label{font-size:.75rem;font-weight:700;color:rgba(255,255,255,.5);text-align:center;
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.drag-item{background:#fff;border-radius:12px;padding:12px 8px;text-align:center;
+  font-size:.9rem;font-weight:700;box-shadow:var(--shadow);cursor:grab;
+  border:3px solid transparent;transition:transform .15s;user-select:none;-webkit-tap-highlight-color:transparent}
 .drag-item:active{cursor:grabbing;transform:scale(1.06)}
-.drag-item.dragging{opacity:.5;transform:scale(1.06)}
-.drop-zone{background:rgba(255,255,255,.5);border:3px dashed #ccc;border-radius:14px;
-  padding:14px 10px;text-align:center;font-size:1rem;font-weight:700;
-  min-height:54px;transition:border-color .2s,background .2s;color:#bbb}
-.drop-zone.over{border-color:var(--blue);background:rgba(52,152,219,.1)}
-.drop-zone.matched{border-color:var(--green);background:rgba(46,204,113,.1);
+.drag-item.dragging{opacity:.5}
+.drop-zone{background:rgba(255,255,255,.08);border:2px dashed rgba(255,255,255,.3);
+  border-radius:12px;padding:12px 8px;text-align:center;font-size:.9rem;font-weight:700;
+  min-height:50px;transition:all .2s;color:rgba(255,255,255,.4)}
+.drop-zone.over{border-color:#4facfe;background:rgba(79,172,254,.15)}
+.drop-zone.matched{border-color:var(--green);background:rgba(46,204,113,.15);
   color:var(--green);border-style:solid}
 .drop-zone.wrong-drop{border-color:var(--red);animation:shake .3s}
+.reset-btn{width:100%;border:none;border-radius:14px;padding:14px;font-size:.95rem;
+  font-weight:800;cursor:pointer;background:rgba(255,255,255,.15);color:#fff;margin-top:6px;
+  -webkit-tap-highlight-color:transparent}
+.reset-btn:active{background:rgba(255,255,255,.25)}
 
-/* ===== CONFETTI ===== */
-#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;
-  pointer-events:none;z-index:999}
+/* RESULT */
+#result{background:linear-gradient(135deg,#0f3460,#533483)}
+.result-emoji{font-size:6rem;animation:floatY 1s infinite alternate;margin-bottom:14px}
+.result-title{font-size:2rem;font-weight:900;color:#fff;margin-bottom:6px;text-align:center}
+.result-score{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:28px;text-align:center}
+.result-btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:280px}
+.result-btn{border:none;border-radius:50px;padding:17px;font-size:1rem;font-weight:800;
+  cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent}
+.result-btn:active{transform:scale(.95)}
+.result-btn.home{background:#f1c40f;color:#1a1a2e}
+.result-btn.retry{background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4)}
 
-/* ===== STARS ===== */
+/* CONFETTI + STARS */
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
 .stars-anim{position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);
   font-size:4rem;animation:starPop .8s forwards;z-index:998;pointer-events:none}
 @keyframes starPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
-  60%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}
-  100%{opacity:0;transform:translate(-50%,-60%) scale(1)}}
+  60%{opacity:1;transform:translate(-50%,-50%) scale(1.4)}
+  100%{opacity:0;transform:translate(-50%,-70%) scale(1)}}
 
-/* ===== RESULT SCREEN ===== */
-#result{background:linear-gradient(135deg,#667eea,#764ba2)}
-.result-emoji{font-size:6rem;animation:bounce 1s infinite alternate;margin-bottom:16px}
-.result-title{font-size:2rem;font-weight:900;color:#fff;margin-bottom:8px;text-align:center}
-.result-score{font-size:1.2rem;color:rgba(255,255,255,.85);margin-bottom:28px;text-align:center}
-.result-btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:280px}
-.result-btn{border:none;border-radius:50px;padding:18px;font-size:1.1rem;font-weight:800;
-  cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent}
-.result-btn:active{transform:scale(.95)}
-.result-btn.home{background:#fff;color:var(--purple)}
-.result-btn.retry{background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.5)}
-
-/* ===== UTILS ===== */
 .hidden{display:none!important}
 </style>
 </head>
@@ -177,63 +195,103 @@ body{font-family:var(--font);background:var(--bg);min-height:100vh;
 
   <!-- SPLASH -->
   <div class="screen active" id="splash">
-    <span class="splash-emoji">🌏</span>
-    <div class="splash-logo">DualLingo Kids</div>
-    <div class="splash-sub">Learn Nepali • Learn English</div>
+    <div class="splash-flag">🇳🇵</div>
+    <div class="splash-logo">Nepa-angrezi</div>
+    <div class="splash-np">नेपा-अंग्रेजी</div>
+    <div class="splash-tagline">Learn Nepali + English • सिक्नुस् नेपाली + अंग्रेजी</div>
+    <button class="splash-btn" onclick="goToModeSelect()">▶ Start Learning!</button>
+  </div>
+
+  <!-- GLOBAL MODE SELECT -->
+  <div class="screen" id="globalMode">
+    <div class="gmode-title">How do you learn? 🎓</div>
+    <div class="gmode-sub">Choose your style — you can always switch later!</div>
+    <div class="gmode-cards">
+      <button class="gmode-card toddler" onclick="setGlobalMode('toddler')">
+        <span class="gmode-icon">👶</span>
+        <div class="gmode-info">
+          <h3>Toddler Mode</h3>
+          <p>Tap & Listen! Ages 3–4<br>No reading needed</p>
+        </div>
+      </button>
+      <button class="gmode-card learner" onclick="setGlobalMode('learner')">
+        <span class="gmode-icon">🧠</span>
+        <div class="gmode-info">
+          <h3>Learner Mode</h3>
+          <p>Quiz & Match! Ages 5–7<br>Fun challenges & score</p>
+        </div>
+      </button>
+    </div>
   </div>
 
   <!-- HOME -->
   <div class="screen" id="home">
-    <div class="home-title">🎉 DualLingo Kids</div>
-    <div class="home-sub">What do you want to learn today?</div>
+    <div class="home-header">
+      <div class="home-title">📚 Nepa-angrezi</div>
+      <div class="home-mode-badge" id="homeBadge">👶 Toddler Mode</div>
+      <div class="home-sub">Pick a category to learn!</div>
+    </div>
     <div class="category-grid">
       <button class="cat-btn animals" onclick="selectCategory('animals')">
         <span class="cat-emoji">🦁</span>
-        <span class="cat-label">Animals</span>
+        <span class="cat-label-en">Animals</span>
+        <span class="cat-label-np">जनावर</span>
       </button>
       <button class="cat-btn alphabets" onclick="selectCategory('alphabets')">
         <span class="cat-emoji">🔤</span>
-        <span class="cat-label">Alphabets</span>
+        <span class="cat-label-en">Alphabets</span>
+        <span class="cat-label-np">अक्षर</span>
       </button>
       <button class="cat-btn numbers" onclick="selectCategory('numbers')">
         <span class="cat-emoji">🔢</span>
-        <span class="cat-label">Numbers</span>
+        <span class="cat-label-en">Numbers</span>
+        <span class="cat-label-np">अंक</span>
+      </button>
+      <button class="cat-btn bodyparts" onclick="selectCategory('bodyparts')">
+        <span class="cat-emoji">🫀</span>
+        <span class="cat-label-en">Body Parts</span>
+        <span class="cat-label-np">शरीरका अंग</span>
+      </button>
+      <button class="cat-btn colors" onclick="selectCategory('colors')">
+        <span class="cat-emoji">🎨</span>
+        <span class="cat-label-en">Colors</span>
+        <span class="cat-label-np">रंगहरू</span>
+      </button>
+      <button class="cat-btn solar" onclick="selectCategory('solar')">
+        <span class="cat-emoji">🪐</span>
+        <span class="cat-label-en">Solar System</span>
+        <span class="cat-label-np">सौरमण्डल</span>
+      </button>
+      <button class="cat-btn vehicles" onclick="selectCategory('vehicles')">
+        <span class="cat-emoji">🚗</span>
+        <span class="cat-label-en">Vehicles</span>
+        <span class="cat-label-np">सवारी साधन</span>
+      </button>
+      <button class="cat-btn fruits" onclick="selectCategory('fruits')">
+        <span class="cat-emoji">🍎</span>
+        <span class="cat-label-en">Fruits</span>
+        <span class="cat-label-np">फलफूल</span>
+      </button>
+      <button class="cat-btn vegetables" onclick="selectCategory('vegetables')">
+        <span class="cat-emoji">🥦</span>
+        <span class="cat-label-en">Vegetables</span>
+        <span class="cat-label-np">तरकारी</span>
       </button>
     </div>
-  </div>
-
-  <!-- MODE SELECT -->
-  <div class="screen" id="modeSelect">
-    <button class="back-btn" onclick="showScreen('home')">← Back</button>
-    <div class="mode-title">Choose Your Mode</div>
-    <div class="mode-sub" id="modeSubText">Pick how you want to play!</div>
-    <div class="mode-cards">
-      <button class="mode-card toddler" onclick="startMode('toddler')">
-        <span class="mode-icon">👶</span>
-        <div class="mode-info">
-          <h3>Toddler Mode</h3>
-          <p>Tap & listen! Ages 3–4</p>
-        </div>
-      </button>
-      <button class="mode-card learner" onclick="startMode('learner')">
-        <span class="mode-icon">🧠</span>
-        <div class="mode-info">
-          <h3>Learner Mode</h3>
-          <p>Quiz & match! Ages 5–7</p>
-        </div>
-      </button>
-    </div>
+    <button class="switch-mode-btn" onclick="showScreen('globalMode')">🔄 Switch Mode</button>
   </div>
 
   <!-- TODDLER -->
   <div class="screen" id="toddler">
-    <button class="back-btn" onclick="showScreen('modeSelect')">← Back</button>
+    <button class="back-btn" onclick="showScreen('home')">← Back</button>
     <div class="toddler-card">
+      <div class="cat-tag" id="toddlerTag">Animals</div>
       <div class="progress-dots" id="toddlerDots"></div>
+      <div class="item-counter" id="toddlerCounter">1 of 7</div>
       <span class="toddler-img" id="toddlerEmoji" onclick="speakCurrent()">🐄</span>
       <div class="toddler-en" id="toddlerEn">Cow</div>
       <div class="toddler-np" id="toddlerNp">गाई</div>
-      <div class="tap-hint">👆 Tap to hear!</div>
+      <div class="tap-hint">👆 Tap the picture to hear!</div>
       <div class="nav-row">
         <button class="nav-btn prev" onclick="toddlerNav(-1)">◀ Prev</button>
         <button class="nav-btn next" onclick="toddlerNav(1)">Next ▶</button>
@@ -243,13 +301,12 @@ body{font-family:var(--font);background:var(--bg);min-height:100vh;
 
   <!-- LEARNER -->
   <div class="screen" id="learner">
-    <button class="back-btn" onclick="showScreen('modeSelect')">← Back</button>
+    <button class="back-btn" onclick="showScreen('home')">← Back</button>
     <div class="score-badge">⭐ Score: <span id="scoreDisplay">0</span></div>
     <div class="learner-tabs">
       <button class="tab-btn active" id="tabQuiz" onclick="switchTab('quiz')">🎯 Quiz</button>
       <button class="tab-btn" id="tabDnd" onclick="switchTab('dnd')">🔗 Match</button>
     </div>
-    <!-- QUIZ -->
     <div id="quizPanel" class="quiz-wrap">
       <div class="quiz-progress" id="quizProgress">1 / 5</div>
       <div class="quiz-q">
@@ -258,7 +315,6 @@ body{font-family:var(--font);background:var(--bg);min-height:100vh;
       </div>
       <div class="quiz-opts" id="quizOpts"></div>
     </div>
-    <!-- DRAG & DROP -->
     <div id="dndPanel" class="dnd-wrap hidden">
       <div class="dnd-title">🔗 Drag the English word to its Nepali match!</div>
       <div class="dnd-row">
@@ -271,14 +327,14 @@ body{font-family:var(--font);background:var(--bg);min-height:100vh;
           <div id="dropZones"></div>
         </div>
       </div>
-      <button class="nav-btn next" style="width:100%;margin-top:8px" onclick="resetDnd()">🔄 Reset</button>
+      <button class="reset-btn" onclick="resetDnd()">🔄 Reset</button>
     </div>
   </div>
 
   <!-- RESULT -->
   <div class="screen" id="result">
-    <div class="result-emoji">🏆</div>
-    <div class="result-title">Amazing!</div>
+    <div class="result-emoji" id="resultEmoji">🏆</div>
+    <div class="result-title" id="resultTitle">Amazing!</div>
     <div class="result-score" id="resultScore">You scored 50 points!</div>
     <div class="result-btns">
       <button class="result-btn home" onclick="goHome()">🏠 Home</button>
@@ -287,26 +343,32 @@ body{font-family:var(--font);background:var(--bg);min-height:100vh;
   </div>
 
 </div>
-
 <script>
-// ===== DATA =====
+// ===== FULL DATA =====
 const DATA = {
   animals:[
-    {english:"Cow",    nepali:"गाई",    emoji:"🐄", sound:"moo"},
-    {english:"Dog",    nepali:"कुकुर",   emoji:"🐕", sound:"woof"},
-    {english:"Cat",    nepali:"बिरालो", emoji:"🐱", sound:"meow"},
-    {english:"Lion",   nepali:"सिंह",   emoji:"🦁", sound:"roar"},
-    {english:"Elephant",nepali:"हात्ती",emoji:"🐘", sound:"trumpet"},
-    {english:"Monkey", nepali:"बाँदर",  emoji:"🐒", sound:"chatter"},
-    {english:"Bird",   nepali:"चरा",    emoji:"🐦", sound:"tweet"},
+    {english:"Cow",      nepali:"गाई",      emoji:"🐄"},
+    {english:"Dog",      nepali:"कुकुर",    emoji:"🐕"},
+    {english:"Cat",      nepali:"बिरालो",   emoji:"🐱"},
+    {english:"Lion",     nepali:"सिंह",     emoji:"🦁"},
+    {english:"Elephant", nepali:"हात्ती",   emoji:"🐘"},
+    {english:"Monkey",   nepali:"बाँदर",    emoji:"🐒"},
+    {english:"Bird",     nepali:"चरा",      emoji:"🐦"},
+    {english:"Fish",     nepali:"माछा",     emoji:"🐟"},
+    {english:"Tiger",    nepali:"बाघ",      emoji:"🐯"},
+    {english:"Rabbit",   nepali:"खरायो",    emoji:"🐰"},
   ],
   alphabets:[
-    {english:"A – Apple",  nepali:"अ – अनार",   emoji:"🍎"},
-    {english:"B – Ball",   nepali:"ब – बाँस",   emoji:"⚽"},
-    {english:"C – Cat",    nepali:"क – किताब",  emoji:"🐱"},
-    {english:"D – Dog",    nepali:"ड – डमरु",   emoji:"🐕"},
-    {english:"E – Elephant",nepali:"ए – एभोकाडो",emoji:"🐘"},
-    {english:"F – Fish",   nepali:"फ – फूल",    emoji:"🐟"},
+    {english:"A – Apple",    nepali:"अ – अनार",      emoji:"🍎"},
+    {english:"B – Ball",     nepali:"ब – बाँस",      emoji:"⚽"},
+    {english:"C – Cat",      nepali:"क – किताब",     emoji:"🐱"},
+    {english:"D – Dog",      nepali:"ड – डमरु",      emoji:"🐕"},
+    {english:"E – Elephant", nepali:"ए – एभोकाडो",   emoji:"🐘"},
+    {english:"F – Fish",     nepali:"फ – फूल",       emoji:"🐟"},
+    {english:"G – Goat",     nepali:"ग – गाई",       emoji:"🐐"},
+    {english:"H – Hat",      nepali:"ह – हात",       emoji:"🎩"},
+    {english:"I – Ice",      nepali:"इ – इच्छा",     emoji:"🧊"},
+    {english:"J – Jar",      nepali:"ज – जल",        emoji:"🫙"},
   ],
   numbers:[
     {english:"One",   nepali:"एक",    emoji:"1️⃣"},
@@ -314,15 +376,117 @@ const DATA = {
     {english:"Three", nepali:"तीन",   emoji:"3️⃣"},
     {english:"Four",  nepali:"चार",   emoji:"4️⃣"},
     {english:"Five",  nepali:"पाँच",  emoji:"5️⃣"},
+    {english:"Six",   nepali:"छ",     emoji:"6️⃣"},
+    {english:"Seven", nepali:"सात",   emoji:"7️⃣"},
+    {english:"Eight", nepali:"आठ",    emoji:"8️⃣"},
+    {english:"Nine",  nepali:"नौ",    emoji:"9️⃣"},
+    {english:"Ten",   nepali:"दश",    emoji:"🔟"},
+  ],
+  bodyparts:[
+    {english:"Head",     nepali:"टाउको",    emoji:"🗣️"},
+    {english:"Eye",      nepali:"आँखा",     emoji:"👁️"},
+    {english:"Ear",      nepali:"कान",      emoji:"👂"},
+    {english:"Nose",     nepali:"नाक",      emoji:"👃"},
+    {english:"Mouth",    nepali:"मुख",      emoji:"👄"},
+    {english:"Hand",     nepali:"हात",      emoji:"✋"},
+    {english:"Foot",     nepali:"खुट्टा",   emoji:"🦶"},
+    {english:"Teeth",    nepali:"दाँत",     emoji:"🦷"},
+    {english:"Hair",     nepali:"कपाल",     emoji:"💇"},
+    {english:"Heart",    nepali:"मुटु",     emoji:"❤️"},
+    {english:"Stomach",  nepali:"पेट",      emoji:"🫃"},
+    {english:"Finger",   nepali:"औंला",     emoji:"☝️"},
+  ],
+  colors:[
+    {english:"Red",    nepali:"रातो",      emoji:"🔴"},
+    {english:"Blue",   nepali:"निलो",      emoji:"🔵"},
+    {english:"Green",  nepali:"हरियो",     emoji:"🟢"},
+    {english:"Yellow", nepali:"पहेंलो",    emoji:"🟡"},
+    {english:"Orange", nepali:"सुन्तला",   emoji:"🟠"},
+    {english:"Purple", nepali:"बैजनी",     emoji:"🟣"},
+    {english:"Pink",   nepali:"गुलाबी",    emoji:"🩷"},
+    {english:"White",  nepali:"सेतो",      emoji:"⚪"},
+    {english:"Black",  nepali:"कालो",      emoji:"⚫"},
+    {english:"Brown",  nepali:"खैरो",      emoji:"🟤"},
+    {english:"Grey",   nepali:"खरानी",     emoji:"🩶"},
+    {english:"Gold",   nepali:"सुनौलो",    emoji:"🌟"},
+  ],
+  solar:[
+    {english:"Sun",     nepali:"सूर्य",     emoji:"☀️"},
+    {english:"Moon",    nepali:"चन्द्रमा",  emoji:"🌕"},
+    {english:"Mercury", nepali:"बुध",       emoji:"🪨"},
+    {english:"Venus",   nepali:"शुक्र",     emoji:"🌅"},
+    {english:"Earth",   nepali:"पृथ्वी",    emoji:"🌍"},
+    {english:"Mars",    nepali:"मंगल",      emoji:"🔴"},
+    {english:"Jupiter", nepali:"बृहस्पति",  emoji:"🪐"},
+    {english:"Saturn",  nepali:"शनि",       emoji:"💫"},
+    {english:"Uranus",  nepali:"युरेनस",    emoji:"🔵"},
+    {english:"Neptune", nepali:"नेप्चुन",   emoji:"🌊"},
+    {english:"Star",    nepali:"तारा",      emoji:"⭐"},
+  ],
+  vehicles:[
+    {english:"Car",         nepali:"कार",           emoji:"🚗"},
+    {english:"Bus",         nepali:"बस",            emoji:"🚌"},
+    {english:"Truck",       nepali:"ट्रक",          emoji:"🚚"},
+    {english:"Bicycle",     nepali:"साइकल",         emoji:"🚲"},
+    {english:"Motorcycle",  nepali:"मोटरसाइकल",     emoji:"🏍️"},
+    {english:"Airplane",    nepali:"हवाईजहाज",      emoji:"✈️"},
+    {english:"Helicopter",  nepali:"हेलिकप्टर",     emoji:"🚁"},
+    {english:"Boat",        nepali:"डुंगा",          emoji:"⛵"},
+    {english:"Train",       nepali:"रेलगाडी",       emoji:"🚂"},
+    {english:"Tractor",     nepali:"ट्र्याक्टर",    emoji:"🚜"},
+    {english:"Ambulance",   nepali:"एम्बुलेन्स",    emoji:"🚑"},
+    {english:"Fire Truck",  nepali:"दमकल",          emoji:"🚒"},
+    {english:"Scooter",     nepali:"स्कुटर",        emoji:"🛵"},
+    {english:"Rocket",      nepali:"रकेट",          emoji:"🚀"},
+    {english:"Submarine",   nepali:"पनडुब्बी",      emoji:"🤿"},
+  ],
+  fruits:[
+    {english:"Apple",      nepali:"स्याउ",       emoji:"🍎"},
+    {english:"Banana",     nepali:"केरा",        emoji:"🍌"},
+    {english:"Mango",      nepali:"आँप",         emoji:"🥭"},
+    {english:"Orange",     nepali:"सुन्तला",     emoji:"🍊"},
+    {english:"Grapes",     nepali:"अंगुर",       emoji:"🍇"},
+    {english:"Strawberry", nepali:"स्ट्रबेरी",   emoji:"🍓"},
+    {english:"Watermelon", nepali:"तरबुजा",      emoji:"🍉"},
+    {english:"Pineapple",  nepali:"भुईंकटहर",   emoji:"🍍"},
+    {english:"Lemon",      nepali:"कागती",       emoji:"🍋"},
+    {english:"Coconut",    nepali:"नरिवल",       emoji:"🥥"},
+    {english:"Guava",      nepali:"अम्बा",       emoji:"🍈"},
+    {english:"Papaya",     nepali:"मेवा",        emoji:"🫐"},
+    {english:"Pomegranate",nepali:"अनार",        emoji:"🍑"},
+    {english:"Cherry",     nepali:"चेरी",        emoji:"🍒"},
+    {english:"Peach",      nepali:"आरू",         emoji:"🍑"},
+  ],
+  vegetables:[
+    {english:"Potato",     nepali:"आलु",         emoji:"🥔"},
+    {english:"Tomato",     nepali:"गोलभेडा",     emoji:"🍅"},
+    {english:"Onion",      nepali:"प्याज",       emoji:"🧅"},
+    {english:"Carrot",     nepali:"गाजर",        emoji:"🥕"},
+    {english:"Cabbage",    nepali:"बन्दागोभी",   emoji:"🥬"},
+    {english:"Spinach",    nepali:"पालुंगो",     emoji:"🌿"},
+    {english:"Pumpkin",    nepali:"फर्सी",       emoji:"🎃"},
+    {english:"Cucumber",   nepali:"काक्रो",      emoji:"🥒"},
+    {english:"Garlic",     nepali:"लसुन",        emoji:"🧄"},
+    {english:"Corn",       nepali:"मकै",         emoji:"🌽"},
+    {english:"Broccoli",   nepali:"ब्रोकाउली",   emoji:"🥦"},
+    {english:"Eggplant",   nepali:"भन्टा",       emoji:"🍆"},
+    {english:"Radish",     nepali:"मूला",        emoji:"🌱"},
+    {english:"Mushroom",   nepali:"च्याउ",       emoji:"🍄"},
+    {english:"Pepper",     nepali:"खुर्सानी",    emoji:"🌶️"},
   ]
 };
 
+const CAT_COLORS={
+  animals:"#2ECC71",alphabets:"#3498DB",numbers:"#FF8C42",
+  bodyparts:"#E74C3C",colors:"#9B59B6",solar:"#1ABC9C",
+  vehicles:"#F1C40F",fruits:"#FF6B9D",vegetables:"#27AE60"
+};
+
 // ===== STATE =====
-let state = {
-  screen:"splash", category:"animals", mode:"toddler",
-  toddlerIdx:0, score:0, quizIdx:0, quizItems:[],
-  tab:"quiz", dndDragging:null, dndMatches:0, dndTotal:0,
-  quizAnswered:false
+let state={
+  screen:"splash",globalMode:"toddler",category:"animals",
+  toddlerIdx:0,score:0,quizIdx:0,quizItems:[],
+  tab:"quiz",dndDragging:null,dndMatches:0,dndTotal:0,quizAnswered:false
 };
 
 // ===== SCREEN NAV =====
@@ -330,25 +494,25 @@ function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   state.screen=id;
+  playClick();
 }
 
 // ===== SPLASH =====
-setTimeout(()=>showScreen('home'), 2200);
+function goToModeSelect(){showScreen('globalMode');}
+
+// ===== GLOBAL MODE =====
+function setGlobalMode(mode){
+  state.globalMode=mode;
+  document.getElementById('homeBadge').textContent=
+    mode==='toddler'?'👶 Toddler Mode':'🧠 Learner Mode';
+  showScreen('home');
+}
 
 // ===== CATEGORY =====
 function selectCategory(cat){
   state.category=cat;
-  document.getElementById('modeSubText').textContent=
-    "Playing: " + cat.charAt(0).toUpperCase()+cat.slice(1);
-  showScreen('modeSelect');
-}
-
-// ===== MODE =====
-function startMode(mode){
-  state.mode=mode;
-  state.score=0;
-  updateScore();
-  if(mode==='toddler'){
+  state.score=0; updateScore();
+  if(state.globalMode==='toddler'){
     state.toddlerIdx=0;
     renderToddler();
     showScreen('toddler');
@@ -365,13 +529,19 @@ function startMode(mode){
 function renderToddler(){
   const items=DATA[state.category];
   const item=items[state.toddlerIdx];
+  const tag=document.getElementById('toddlerTag');
+  tag.textContent=state.category.charAt(0).toUpperCase()+state.category.slice(1);
+  tag.style.background=CAT_COLORS[state.category]||'#9B59B6';
   document.getElementById('toddlerEmoji').textContent=item.emoji;
   document.getElementById('toddlerEn').textContent=item.english;
   document.getElementById('toddlerNp').textContent=item.nepali;
-  // dots
+  document.getElementById('toddlerCounter').textContent=
+    `${state.toddlerIdx+1} of ${items.length}`;
   const dots=document.getElementById('toddlerDots');
-  dots.innerHTML=items.map((_,i)=>
-    `<div class="dot${i===state.toddlerIdx?' active':''}"></div>`).join('');
+  // show max 10 dots
+  const show=Math.min(items.length,10);
+  dots.innerHTML=Array.from({length:show},(_,i)=>
+    `<div class="dot${i===state.toddlerIdx%show?' active':''}"></div>`).join('');
 }
 function toddlerNav(dir){
   const items=DATA[state.category];
@@ -382,12 +552,11 @@ function toddlerNav(dir){
 function speakCurrent(){
   const item=DATA[state.category][state.toddlerIdx];
   speak(item.english,'en-US');
-  setTimeout(()=>speak(item.nepali,'hi-IN'),1200);
-  playClick();
-  // bounce emoji
+  setTimeout(()=>speak(item.nepali,'hi-IN'),1300);
   const el=document.getElementById('toddlerEmoji');
-  el.style.transform='scale(1.3)';
+  el.style.transform='scale(1.25)';
   setTimeout(()=>el.style.transform='',400);
+  playClick();
 }
 
 // ===== SPEECH =====
@@ -395,52 +564,44 @@ function speak(text,lang){
   if(!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);
-  u.lang=lang; u.rate=0.85; u.pitch=1.1;
+  u.lang=lang; u.rate=0.82; u.pitch=1.1;
   window.speechSynthesis.speak(u);
 }
 
-// ===== AUDIO (Web Audio API) =====
+// ===== AUDIO =====
 const AC=window.AudioContext||window.webkitAudioContext;
-let ctx;
-function getCtx(){if(!ctx) ctx=new AC(); return ctx;}
-
+let actx;
+function getCtx(){if(!actx)actx=new AC();return actx;}
 function playClick(){
-  try{
-    const c=getCtx(),o=c.createOscillator(),g=c.createGain();
+  try{const c=getCtx(),o=c.createOscillator(),g=c.createGain();
     o.connect(g);g.connect(c.destination);
-    o.frequency.value=600;g.gain.setValueAtTime(.3,c.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.1);
-    o.start();o.stop(c.currentTime+.1);
-  }catch(e){}
+    o.frequency.value=700;g.gain.setValueAtTime(.2,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.08);
+    o.start();o.stop(c.currentTime+.08);}catch(e){}
 }
 function playCorrect(){
-  try{
-    const c=getCtx();
-    [[523,.0],[659,.15],[784,.3],[1047,.5]].forEach(([f,t])=>{
+  try{const c=getCtx();
+    [[523,.0],[659,.13],[784,.26],[1047,.42]].forEach(([f,t])=>{
       const o=c.createOscillator(),g=c.createGain();
       o.connect(g);g.connect(c.destination);
-      o.frequency.value=f;g.gain.setValueAtTime(.25,c.currentTime+t);
-      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+.25);
-      o.start(c.currentTime+t);o.stop(c.currentTime+t+.25);
-    });
-  }catch(e){}
+      o.frequency.value=f;g.gain.setValueAtTime(.22,c.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+.22);
+      o.start(c.currentTime+t);o.stop(c.currentTime+t+.22);
+    });}catch(e){}
 }
 function playWrong(){
-  try{
-    const c=getCtx(),o=c.createOscillator(),g=c.createGain();
+  try{const c=getCtx(),o=c.createOscillator(),g=c.createGain();
     o.connect(g);g.connect(c.destination);
-    o.type='sawtooth';o.frequency.value=180;
-    g.gain.setValueAtTime(.25,c.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.4);
-    o.start();o.stop(c.currentTime+.4);
-  }catch(e){}
+    o.type='sawtooth';o.frequency.value=160;
+    g.gain.setValueAtTime(.22,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.35);
+    o.start();o.stop(c.currentTime+.35);}catch(e){}
 }
 
 // ===== QUIZ =====
 function buildQuiz(){
   const all=[...DATA[state.category]];
-  // shuffle
-  state.quizItems=all.sort(()=>Math.random()-.5).slice(0,Math.min(5,all.length));
+  state.quizItems=all.sort(()=>Math.random()-.5).slice(0,Math.min(6,all.length));
   state.quizIdx=0;
   renderQuiz();
 }
@@ -448,20 +609,14 @@ function renderQuiz(){
   const items=state.quizItems;
   const correct=items[state.quizIdx];
   state.quizAnswered=false;
-  document.getElementById('quizProgress').textContent=
-    `${state.quizIdx+1} / ${items.length}`;
+  document.getElementById('quizProgress').textContent=`${state.quizIdx+1} / ${items.length}`;
   document.getElementById('quizQuestion').textContent=correct.nepali;
-  // speak the question
   setTimeout(()=>speak(correct.english,'en-US'),400);
-
-  // build 3 options: correct + 2 random wrong
-  const pool=[...DATA[state.category]].filter(x=>x!==correct);
+  const pool=[...DATA[state.category]].filter(x=>x.english!==correct.english);
   const wrong=pool.sort(()=>Math.random()-.5).slice(0,2);
   const opts=[correct,...wrong].sort(()=>Math.random()-.5);
-
-  const container=document.getElementById('quizOpts');
-  container.innerHTML=opts.map(opt=>`
-    <button class="quiz-opt" onclick="checkAnswer(this,'${opt.english}','${correct.english}')">
+  document.getElementById('quizOpts').innerHTML=opts.map(opt=>`
+    <button class="quiz-opt" onclick="checkAnswer(this,'${opt.english.replace(/'/g,"\\'")}','${correct.english.replace(/'/g,"\\'")}')">
       <span class="quiz-opt-emoji">${opt.emoji}</span>
       <span>${opt.english}</span>
     </button>`).join('');
@@ -472,30 +627,24 @@ function checkAnswer(el,chosen,correct){
   if(chosen===correct){
     el.classList.add('correct');
     state.score+=10; updateScore();
-    playCorrect();
-    showStar();
-    setTimeout(nextQuiz,1200);
+    playCorrect(); showStar();
+    setTimeout(nextQuiz,1100);
   } else {
     el.classList.add('wrong');
-    // highlight correct
     document.querySelectorAll('.quiz-opt').forEach(b=>{
       if(b.querySelector('span:last-child').textContent===correct)
         b.classList.add('correct');
     });
     playWrong();
     setTimeout(()=>{
-      document.querySelectorAll('.quiz-opt').forEach(b=>{
-        b.classList.remove('wrong','correct');
-      });
+      document.querySelectorAll('.quiz-opt').forEach(b=>b.classList.remove('wrong','correct'));
       state.quizAnswered=false;
-    },1000);
+    },900);
   }
 }
 function nextQuiz(){
   state.quizIdx++;
-  if(state.quizIdx>=state.quizItems.length){
-    showResult(); return;
-  }
+  if(state.quizIdx>=state.quizItems.length){showResult();return;}
   renderQuiz();
 }
 
@@ -504,39 +653,30 @@ function buildDnd(){
   const items=[...DATA[state.category]].sort(()=>Math.random()-.5).slice(0,4);
   state.dndTotal=items.length; state.dndMatches=0;
   const nepalis=[...items].sort(()=>Math.random()-.5);
-
-  const dragCont=document.getElementById('dragItems');
-  const dropCont=document.getElementById('dropZones');
-  dragCont.innerHTML=''; dropCont.innerHTML='';
-
+  const dc=document.getElementById('dragItems');
+  const dz=document.getElementById('dropZones');
+  dc.innerHTML=''; dz.innerHTML='';
   items.forEach(item=>{
     const d=document.createElement('div');
-    d.className='drag-item'; d.textContent=item.english;
+    d.className='drag-item';
+    d.innerHTML=`${item.emoji} ${item.english}`;
     d.dataset.key=item.english;
     d.draggable=true;
-    d.addEventListener('dragstart',e=>{
-      state.dndDragging=item.english;
-      d.classList.add('dragging');
-    });
+    d.addEventListener('dragstart',()=>{state.dndDragging=item.english;d.classList.add('dragging');});
     d.addEventListener('dragend',()=>d.classList.remove('dragging'));
-    // touch
     d.addEventListener('touchstart',touchStart,{passive:true});
     d.addEventListener('touchmove',touchMove,{passive:false});
     d.addEventListener('touchend',touchEnd);
-    dragCont.appendChild(d);
+    dc.appendChild(d);
   });
-
   nepalis.forEach(item=>{
     const z=document.createElement('div');
     z.className='drop-zone'; z.textContent=item.nepali;
     z.dataset.key=item.english;
-    z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over')});
+    z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over');});
     z.addEventListener('dragleave',()=>z.classList.remove('over'));
-    z.addEventListener('drop',e=>{
-      e.preventDefault(); z.classList.remove('over');
-      handleDrop(z);
-    });
-    dropCont.appendChild(z);
+    z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('over');handleDrop(z);});
+    dz.appendChild(z);
   });
 }
 function handleDrop(zone){
@@ -545,14 +685,13 @@ function handleDrop(zone){
   if(drag===zone.dataset.key){
     zone.classList.add('matched');
     zone.textContent='✅ '+zone.textContent;
-    // hide drag item
     document.querySelectorAll('.drag-item').forEach(d=>{
       if(d.dataset.key===drag) d.style.visibility='hidden';
     });
     playCorrect(); showStar();
     state.score+=10; updateScore();
     state.dndMatches++;
-    if(state.dndMatches===state.dndTotal) setTimeout(showResult,1000);
+    if(state.dndMatches===state.dndTotal) setTimeout(showResult,900);
   } else {
     zone.classList.add('wrong-drop');
     playWrong();
@@ -568,24 +707,25 @@ function touchStart(e){
   touchDragEl=e.currentTarget;
   state.dndDragging=touchDragEl.dataset.key;
   touchClone=touchDragEl.cloneNode(true);
-  touchClone.style.cssText=`position:fixed;opacity:.8;pointer-events:none;z-index:999;
-    width:${touchDragEl.offsetWidth}px;font-size:.95rem;font-weight:700;
-    background:#fff;border-radius:14px;padding:14px 10px;text-align:center;
-    box-shadow:0 4px 16px rgba(0,0,0,.2)`;
+  touchClone.style.cssText=`position:fixed;opacity:.85;pointer-events:none;z-index:9999;
+    width:${touchDragEl.offsetWidth}px;font-size:.9rem;font-weight:700;
+    background:#fff;border-radius:12px;padding:12px 8px;text-align:center;
+    box-shadow:0 6px 20px rgba(0,0,0,.25)`;
   document.body.appendChild(touchClone);
 }
 function touchMove(e){
   e.preventDefault();
   const t=e.touches[0];
   touchClone.style.left=t.clientX-touchDragEl.offsetWidth/2+'px';
-  touchClone.style.top=t.clientY-30+'px';
+  touchClone.style.top=t.clientY-34+'px';
 }
 function touchEnd(e){
   if(touchClone){document.body.removeChild(touchClone);touchClone=null;}
   const t=e.changedTouches[0];
   const el=document.elementFromPoint(t.clientX,t.clientY);
-  if(el&&el.classList.contains('drop-zone')) handleDrop(el);
-  else state.dndDragging=null;
+  if(el&&(el.classList.contains('drop-zone')||el.closest('.drop-zone'))){
+    handleDrop(el.closest('.drop-zone')||el);
+  } else state.dndDragging=null;
 }
 
 // ===== TABS =====
@@ -595,31 +735,32 @@ function switchTab(tab){
   document.getElementById('dndPanel').classList.toggle('hidden',tab!=='dnd');
   document.getElementById('tabQuiz').classList.toggle('active',tab==='quiz');
   document.getElementById('tabDnd').classList.toggle('active',tab==='dnd');
-  if(tab==='quiz') buildQuiz();
-  else buildDnd();
-  playClick();
+  if(tab==='quiz') buildQuiz(); else buildDnd();
 }
 
 // ===== SCORE =====
-function updateScore(){
-  document.getElementById('scoreDisplay').textContent=state.score;
-}
+function updateScore(){document.getElementById('scoreDisplay').textContent=state.score;}
 
 // ===== RESULT =====
 function showResult(){
-  document.getElementById('resultScore').textContent=
-    `🌟 You scored ${state.score} points!`;
+  const pct=state.score/(state.quizItems?.length||4)/10;
+  let emoji='🏆',title='Amazing!';
+  if(pct<0.4){emoji='😊';title='Good Try!';}
+  else if(pct<0.7){emoji='⭐';title='Well Done!';}
+  document.getElementById('resultEmoji').textContent=emoji;
+  document.getElementById('resultTitle').textContent=title;
+  document.getElementById('resultScore').textContent=`🌟 You scored ${state.score} points!`;
   launchConfetti();
   showScreen('result');
 }
-function goHome(){showScreen('home');state.score=0;}
-function retryMode(){startMode(state.mode);}
+function goHome(){state.score=0;updateScore();showScreen('home');}
+function retryMode(){selectCategory(state.category);}
 
-// ===== STAR ANIM =====
+// ===== STAR =====
 function showStar(){
   const el=document.createElement('div');
   el.className='stars-anim';
-  el.textContent='⭐';
+  el.textContent=['⭐','🌟','✨'][Math.floor(Math.random()*3)];
   document.body.appendChild(el);
   setTimeout(()=>el.remove(),900);
 }
@@ -627,31 +768,28 @@ function showStar(){
 // ===== CONFETTI =====
 function launchConfetti(){
   const canvas=document.getElementById('confetti-canvas');
-  const ctx2=canvas.getContext('2d');
+  const c=canvas.getContext('2d');
   canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  const pieces=Array.from({length:120},()=>({
-    x:Math.random()*canvas.width, y:-20,
-    w:8+Math.random()*8, h:14+Math.random()*8,
+  const pieces=Array.from({length:130},()=>({
+    x:Math.random()*canvas.width,y:-20,
+    w:7+Math.random()*9,h:12+Math.random()*9,
     r:Math.random()*Math.PI*2,
-    vx:(Math.random()-0.5)*4, vy:3+Math.random()*4,
-    vr:(Math.random()-0.5)*.15,
+    vx:(Math.random()-.5)*5,vy:3+Math.random()*4,
+    vr:(Math.random()-.5)*.18,
     color:`hsl(${Math.random()*360},90%,60%)`
   }));
   let frame=0;
-  function draw(){
-    ctx2.clearRect(0,0,canvas.width,canvas.height);
+  (function draw(){
+    c.clearRect(0,0,canvas.width,canvas.height);
     pieces.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy; p.r+=p.vr;
-      ctx2.save(); ctx2.translate(p.x,p.y); ctx2.rotate(p.r);
-      ctx2.fillStyle=p.color;
-      ctx2.fillRect(-p.w/2,-p.h/2,p.w,p.h);
-      ctx2.restore();
+      p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;
+      c.save();c.translate(p.x,p.y);c.rotate(p.r);
+      c.fillStyle=p.color;c.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      c.restore();
     });
-    frame++;
-    if(frame<140) requestAnimationFrame(draw);
-    else ctx2.clearRect(0,0,canvas.width,canvas.height);
-  }
-  draw();
+    if(++frame<150) requestAnimationFrame(draw);
+    else c.clearRect(0,0,canvas.width,canvas.height);
+  })();
 }
 </script>
 </body>
